@@ -162,24 +162,3 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.login(process.env.DISCORD_TOKEN);
-```
-
----
-
-## 🧪 What This Will Show You
-
-Now when you run `/start`, you'll see in Render logs:
-```
-🚀 /start triggered by YourName in YourServer
-📅 Current time: 2025-10-18T15:38:00.000Z
-⏰ Timestamp: 1729266000000
-
-⚙️ Inactive threshold: 60 seconds (1 minutes)
-📋 Total text channels found: 5
-
---- Channel 1/5: #general (ID: 123456789) ---
-  🔍 Fetching messages...
-  ✅ Last message: "/start" by YourBot#1234
-  📅 Message time: 2025-10-18T15:37:55.000Z
-  ⏱️ Time since activity: 5s (0m) - last message by YourBot#1234
-  📊 Inactive? ❌ NO (threshold: 60s)
