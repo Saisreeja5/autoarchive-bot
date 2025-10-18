@@ -29,7 +29,7 @@ client.on('interactionCreate', async interaction => {
       c =>
         c.type === 0 &&
         c.lastMessageId === null &&
-        Date.now() - c.createdTimestamp > 30 * 24 * 60 * 60 * 1000
+        Date.now() - c.createdTimestamp > 1 * 60 * 1000
     );
 
     // ANTI-ABUSE CHECK
