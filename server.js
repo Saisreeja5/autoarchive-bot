@@ -28,7 +28,7 @@ client.once('ready', async () => {
   }
 
   app.get('/', (req, res) => res.send('Bot running!'));
-  app.listen(port, '0.0.0.0', () => console.log(`🌐 Dummy server on port ${port}`));
+  
 });
 
 client.on('interactionCreate', async interaction => {
@@ -74,5 +74,7 @@ client.on('interactionCreate', async interaction => {
     `✅ ${archivedCount} inactive channels archived!\n🎉 Server CLEAN!\n💡 200 free archives done! $5/mo = UNLIMITED + AUTO monthly\n[Upgrade](YOUR_STRIPE_LINK)`
   );
 });
+
+app.listen(port, '0.0.0.0', () => console.log(`🌐 Dummy server on port ${port}`));
 
 client.login(process.env.DISCORD_TOKEN);
