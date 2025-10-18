@@ -1,35 +1,46 @@
-const { Client, GatewayIntentBits, SlashCommandBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, SlashCommandBuilder, ChannelType } = require('discord.js');
 const express = require('express');
 
 const app = express();
+const port = process.env.PORT || 10000;
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+// Dummy HTTP server for Render
+app.get('/', (req, res) => res.send('Bot running!'));
+app.listen(port, '0.0.0.0', () => console.log(`🌐 Dummy server running on port ${port}`));
 
-// Dummy server for Render
-app.get('/', (req, res) => res.send('OK'));
-
-// When bot is ready
-client.on('ready', () => {
-  console.log('✅ GREEN DOT!');
-  
-  const cmd = new SlashCommandBuilder()
-    .setName('start')
-    .setDescription('Clean');
-  
-  client.application.commands.create(cmd);
+// Discord client with required intents
+const client = new Client({
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]
 });
 
-// Handle slash commands
+client.once('ready', async () => {
+  console.log(`✅ Bot online as ${client.user.tag}`);
+
+  // Register /start command in first guild for instant testing
+  const guild = client.guilds.cache.first();
+  if (!guild) {
+    console.log('⚠️ Bot is not in any guilds!');
+    return;
+  }
+
+  const startCommand = new SlashCommandBuilder()
+    .setName('start')
+    .setDescription('Test: count channels');
+  
+  await guild.commands.create(startCommand);
+  console.log(`💬 /start command registered in guild: ${guild.name}`);
+});
+
 client.on('interactionCreate', async interaction => {
   if (!interaction.isChatInputCommand()) return;
+  if (interaction.commandName !== 'start') return;
 
-  if (interaction.commandName === 'start') {
-    await interaction.reply('✅ WORKING! Found 3 channels archived!');
-  }
+  const guild = interaction.guild;
+  const textChannels = guild.channels.cache.filter(c => c.type === ChannelType.GuildText);
+
+  console.log(`📊 Guild ${guild.name} has ${textChannels.size} text channels.`);
+  await interaction.reply(`📊 This server has ${textChannels.size} text channels.`);
 });
-
-// Start dummy HTTP server
-app.listen(10000, () => console.log('🌐 Dummy server running on port 10000'));
 
 // Login bot
 client.login(process.env.TOKEN);
